@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import xyz.zxcwxy999.curriculumdesign.domain.User;
+import xyz.zxcwxy999.curriculumdesign.service.UserService;
 
 
 import java.util.ArrayList;
@@ -17,10 +19,11 @@ import java.util.List;
 @Controller
 public class MainController {
 
-
+    @Autowired
+    UserService userService;
 
     @GetMapping("/")
-    public String root(){
+    public String root() {
         return "redirect:/index";
     }
 
@@ -42,21 +45,19 @@ public class MainController {
     }
 
     @GetMapping("/register")
-    public String register(){
+    public String register() {
         return "register";
     }
 
-//    /**
-//     * 注册用户
-//     * @param user
-//     * @return
-//     */
-//    @PostMapping("/register")
-//    public String registerUser(User user){
-//        List<Authority> authorities=new ArrayList<>();
-//        authorities.add(authorityService.getAuthorityById(ROLE_USER_AUTHORITY_ID).get());
-//        user.setAuthorities(authorities);
-//        userService.registerUser(user);
-//        return "redirect:/login";
-//    }
+    /**
+     * 注册用户
+     *
+     * @param user
+     * @return
+     */
+    @PostMapping("/register")
+    public String registerUser(User user) {
+        userService.registerUser(user);
+        return "redirect:/login";
+    }
 }
