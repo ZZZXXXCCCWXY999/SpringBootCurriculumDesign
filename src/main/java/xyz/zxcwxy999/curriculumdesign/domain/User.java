@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,7 +43,7 @@ public class User implements UserDetails {
         //首先需将List<Authority>转成List<SimpleGrantedAuthority>，否则前端拿不到角色列表名称
         List<SimpleGrantedAuthority> simpleAuthorities = new ArrayList<>();
 
-            simpleAuthorities.add(new SimpleGrantedAuthority("user"));
+        simpleAuthorities.add(new SimpleGrantedAuthority("user"));
 
         return simpleAuthorities;
     }

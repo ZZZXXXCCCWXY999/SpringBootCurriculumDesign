@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import xyz.zxcwxy999.curriculumdesign.dao.UserDao;
 import xyz.zxcwxy999.curriculumdesign.domain.User;
+
+import java.util.Date;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -39,7 +42,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
      */
     @Override
     public int saveOrUpdateUser(User user) {
-        return userDao.save(user);
+        BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
+        user.setUser_pw(bCryptPasswordEncoder.encode(user.getUser_pw()));
+        return userDao.save(user.getUser_name(),user.getUser_pw(),new Date());
     }
 
     /**
@@ -50,7 +55,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
      */
     @Override
     public int registerUser(User user) {
-        return userDao.save(user);
+        BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
+        user.setUser_pw(bCryptPasswordEncoder.encode(user.getUser_pw()));
+
+        return userDao.save(user.getUser_name(),user.getUser_pw(),new Date());
     }
 
     /**
