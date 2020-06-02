@@ -1,86 +1,90 @@
 package xyz.zxcwxy999.curriculumdesign.service;
 
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import xyz.zxcwxy999.curriculumdesign.dao.UserDao;
+import xyz.zxcwxy999.curriculumdesign.domain.User;
 
-import java.util.Collection;
+@Service("UserService")
+public class UserServiceImpl implements UserService, UserDetailsService {
 
-@Service
-public class UserServiceImpl implements UserDetails {
+    @Autowired
+    UserDao userDao;
+
     /**
-     * Returns the authorities granted to the user. Cannot return <code>null</code>.
+     * Locates the user based on the username. In the actual implementation, the search
+     * may possibly be case sensitive, or case insensitive depending on how the
+     * implementation instance is configured. In this case, the <code>UserDetails</code>
+     * object that comes back may have a username that is of a different case than what
+     * was actually requested..
      *
-     * @return the authorities, sorted by natural key (never <code>null</code>)
+     * @param username the username identifying the user whose data is required.
+     * @return a fully populated user record (never <code>null</code>)
+     * @throws UsernameNotFoundException if the user could not be found or the user has no
+     *                                   GrantedAuthority
      */
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return (UserDetails) userDao.findByUsername(username);
     }
 
     /**
-     * Returns the password used to authenticate the user.
+     * 新增、编辑、保存用户
      *
-     * @return the password
+     * @param user
+     * @return
      */
     @Override
-    public String getPassword() {
-        return null;
+    public int saveOrUpdateUser(User user) {
+        return userDao.save(user);
     }
 
     /**
-     * Returns the username used to authenticate the user. Cannot return <code>null</code>.
+     * 注册用户
      *
-     * @return the username (never <code>null</code>)
+     * @param user
+     * @return
      */
     @Override
-    public String getUsername() {
-        return null;
+    public int registerUser(User user) {
+        return userDao.save(user);
     }
 
     /**
-     * Indicates whether the user's account has expired. An expired account cannot be
-     * authenticated.
+     * 删除用户
      *
-     * @return <code>true</code> if the user's account is valid (ie non-expired),
-     * <code>false</code> if no longer valid (ie expired)
+     * @param id
      */
     @Override
-    public boolean isAccountNonExpired() {
-        return false;
+    public void removeUser(int id) {
+        userDao.deleteById(id);
     }
 
     /**
-     * Indicates whether the user is locked or unlocked. A locked user cannot be
-     * authenticated.
+     * 根据id获取用户
      *
-     * @return <code>true</code> if the user is not locked, <code>false</code> otherwise
+     * @param id
+     * @return
      */
     @Override
-    public boolean isAccountNonLocked() {
-        return false;
+    public User getUserById(int id) {
+        return userDao.findById(id);
     }
 
     /**
-     * Indicates whether the user's credentials (password) has expired. Expired
-     * credentials prevent authentication.
+     * 根据用户名进行分页模糊查询
      *
-     * @return <code>true</code> if the user's credentials are valid (ie non-expired),
-     * <code>false</code> if no longer valid (ie expired)
+     * @param name
+     * @return
      */
     @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    /**
-     * Indicates whether the user is enabled or disabled. A disabled user cannot be
-     * authenticated.
-     *
-     * @return <code>true</code> if the user is enabled, <code>false</code> otherwise
-     */
-    @Override
-    public boolean isEnabled() {
-        return false;
+    public User[] listUsersByNameLike(String name) {
+        //模糊查询
+        name = "%" + name + "%";
+        User[] users = userDao.findByNameLike(name);
+        return users;
     }
 }
