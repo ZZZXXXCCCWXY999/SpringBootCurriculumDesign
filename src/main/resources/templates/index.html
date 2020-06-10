@@ -6,7 +6,28 @@
 </head>
 <body>
 <div sec:authorize="isAuthenticated()">
+    <table class="table">
+        <tr class="warning">
+            <th>编号</th>
+            <th>图书</th>
+            <th>作者</th>
+            <th>出版社</th>
+            <th>价格</th>
+            <th>修改/删除</th>
+        </tr>
+        <tr class="success" th:each="book:${book}">
+            <td th:text="${book.id}"></td>
+            <td th:text="${book.name}"></td>
+            <td th:text="${book.author}"></td>
+            <td th:text="${book.publishing}"></td>
+            <td th:text="${book.price}"></td>
+            <td>
+                <button type="button" class="btn btn-primary">编辑</button>
+                <button type="button" class="btn btn-danger">删除</button>
+            </td>
+        </tr>
 
+    </table>
 </div>
 <div class="container blog-content-container" sec:authorize="isAnonymous()">
     <h1>非法登录</h1>
