@@ -8,19 +8,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import xyz.zxcwxy999.curriculumdesign.dao.UserDao;
-import xyz.zxcwxy999.curriculumdesign.domain.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Service("UserService")
-public class UserServiceImpl implements UserService, UserDetailsService {
-
-    @Autowired
-    UserDao userDao;
+public class UserServiceImpl implements  UserDetailsService {
 
     /**
      * Locates the user based on the username. In the actual implementation, the search

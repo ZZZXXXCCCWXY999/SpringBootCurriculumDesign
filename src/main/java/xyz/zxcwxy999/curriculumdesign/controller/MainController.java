@@ -1,17 +1,9 @@
 package xyz.zxcwxy999.curriculumdesign.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import xyz.zxcwxy999.curriculumdesign.domain.User;
-import xyz.zxcwxy999.curriculumdesign.service.UserService;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 主页控制器
@@ -20,7 +12,6 @@ import java.util.List;
 public class MainController {
 
     @Autowired
-    UserService userService;
 
     @GetMapping("/")
     public String root() {
@@ -41,13 +32,7 @@ public class MainController {
     public String loginError(Model model) {
         model.addAttribute("loginError", true);
         model.addAttribute("errMsg", "登录失败，用户名或密码错误！！！");
-        return "login";
+        return "loginerr";
     }
-
-    @GetMapping("/register")
-    public String register() {
-        return "register";
-    }
-
 
 }
