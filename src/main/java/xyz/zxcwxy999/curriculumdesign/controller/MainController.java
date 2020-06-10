@@ -49,15 +49,5 @@ public class MainController {
         return "register";
     }
 
-    /**
-     * 注册用户
-     *
-     * @param user
-     * @return
-     */
-    @PostMapping("/register")
-    public String registerUser(User user) {
-        userService.registerUser(user);
-        return "redirect:/login";
-    }
+
 }

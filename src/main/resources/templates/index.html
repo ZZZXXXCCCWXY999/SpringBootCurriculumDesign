@@ -5,8 +5,13 @@
 <head th:replace="~{fragments/header :: header}">
 </head>
 <body>
+<div sec:authorize="isAuthenticated()">
 
-    <h1>helloworld</h1>
+</div>
+<div class="container blog-content-container" sec:authorize="isAnonymous()">
+    <h1>非法登录</h1>
+</div>
+
 <div th:replace="~{fragments/footer :: footer}">...</div>
 </body>
 </html>

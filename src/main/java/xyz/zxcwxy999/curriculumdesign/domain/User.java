@@ -55,7 +55,9 @@ public class User implements UserDetails {
      */
     @Override
     public String getPassword() {
-        return user_pw;
+        BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
+        return bCryptPasswordEncoder.encode("admin");
+
     }
 
     /**
@@ -65,7 +67,7 @@ public class User implements UserDetails {
      */
     @Override
     public String getUsername() {
-        return user_name;
+        return "admin";
     }
 
     /**

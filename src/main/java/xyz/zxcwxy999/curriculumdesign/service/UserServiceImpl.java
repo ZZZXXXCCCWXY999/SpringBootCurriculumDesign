@@ -1,6 +1,8 @@
 package xyz.zxcwxy999.curriculumdesign.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,7 +11,10 @@ import org.springframework.stereotype.Service;
 import xyz.zxcwxy999.curriculumdesign.dao.UserDao;
 import xyz.zxcwxy999.curriculumdesign.domain.User;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -31,68 +36,50 @@ public class UserServiceImpl implements UserService, UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return (UserDetails) userDao.findByUsername(username);
+        return new UserDetails() {
+            @Override
+            public Collection<? extends GrantedAuthority> getAuthorities() {
+                List<SimpleGrantedAuthority> simpleAuthorities = new ArrayList<>();
+
+                simpleAuthorities.add(new SimpleGrantedAuthority("user"));
+
+                return simpleAuthorities;
+            }
+
+            @Override
+            public String getPassword() {
+                BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
+                return bCryptPasswordEncoder.encode("admin");
+
+            }
+
+            @Override
+            public String getUsername() {
+                return "admin";
+            }
+
+            @Override
+            public boolean isAccountNonExpired() {
+                return true;
+            }
+
+            @Override
+            public boolean isAccountNonLocked() {
+                return true;
+            }
+
+            @Override
+            public boolean isCredentialsNonExpired() {
+                return true;
+            }
+
+            @Override
+            public boolean isEnabled() {
+                return true;
+            }
+        };
     }
 
-    /**
-     * 新增、编辑、保存用户
-     *
-     * @param user
-     * @return
-     */
-    @Override
-    public int saveOrUpdateUser(User user) {
-        BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
-        user.setUser_pw(bCryptPasswordEncoder.encode(user.getUser_pw()));
-        return userDao.save(user.getUser_name(),user.getUser_pw(),new Date());
-    }
 
-    /**
-     * 注册用户
-     *
-     * @param user
-     * @return
-     */
-    @Override
-    public int registerUser(User user) {
-        BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
-        user.setUser_pw(bCryptPasswordEncoder.encode(user.getUser_pw()));
 
-        return userDao.save(user.getUser_name(),user.getUser_pw(),new Date());
-    }
-
-    /**
-     * 删除用户
-     *
-     * @param id
-     */
-    @Override
-    public void removeUser(int id) {
-        userDao.deleteById(id);
-    }
-
-    /**
-     * 根据id获取用户
-     *
-     * @param id
-     * @return
-     */
-    @Override
-    public User getUserById(int id) {
-        return userDao.findById(id);
-    }
-
-    /**
-     * 根据用户名进行分页模糊查询
-     *
-     * @param name
-     * @return
-     */
-    @Override
-    public User[] listUsersByNameLike(String name) {
-        //模糊查询
-        name = "%" + name + "%";
-        User[] users = userDao.findByNameLike(name);
-        return users;
-    }
 }
