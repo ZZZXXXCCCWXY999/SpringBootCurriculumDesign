@@ -22,8 +22,8 @@
             <td th:text="${book.publishing}"></td>
             <td th:text="${book.price}"></td>
             <td>
-                <button type="button" class="btn btn-primary">编辑</button>
-                <button type="button" class="btn btn-danger">删除</button>
+                <button id="edit" type="button" class="btn btn-primary">编辑</button>
+                <button id="delete" type="button" class="btn btn-danger" data-th-attr="id=${book.id}">删除</button>
             </td>
         </tr>
 
@@ -34,5 +34,6 @@
 </div>
 
 <div th:replace="~{fragments/footer :: footer}">...</div>
+<script src="../../js/index/main.js" th:src="@{/js/index/main.js}"></script>
 </body>
 </html>
