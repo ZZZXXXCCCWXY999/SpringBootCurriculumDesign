@@ -22,8 +22,8 @@
             <td th:text="${book.publishing}"></td>
             <td th:text="${book.price}"></td>
             <td>
-                <button id="edit" type="button" class="btn btn-primary">编辑</button>
-                <button id="delete" type="button" class="btn btn-danger" th:attr="id=${book.id}">删除</button>
+                <a th:href="@{/book/edit}">编辑</a>
+                <a th:href="'/book/delete/' + ${book.id}" >删除</a>
             </td>
         </tr>
 

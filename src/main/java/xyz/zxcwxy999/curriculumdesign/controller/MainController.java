@@ -1,13 +1,9 @@
 package xyz.zxcwxy999.curriculumdesign.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import xyz.zxcwxy999.curriculumdesign.domain.Book;
 import xyz.zxcwxy999.curriculumdesign.service.BookService;
 
@@ -53,12 +49,12 @@ public class MainController {
         return "add";
     }
 
-    @GetMapping("/book/adderr")
+    @GetMapping("/book/edit")
     public String adderr() {
-        return "adderr";
+        return "edit";
     }
 
-    @PostMapping("/book/add")
+    @GetMapping("/book/addnew")
     public String addbook(@RequestParam("name") String name,
                           @RequestParam("author") String author,
                           @RequestParam("publishing") String publishing,
@@ -69,7 +65,26 @@ public class MainController {
         book.setAuthor(author);
         book.setPublishing(publishing);
         book.setPrice(pprice);
-        return bookService.createBook(book) ? "index" : "/book/adderr";
+        return bookService.createBook(book) ? "redirect:/index" : "redirect:/book/adderr";
+    }
+    @GetMapping("/book/delete/{id}")
+    public String deletebook(@PathVariable("id") int id){
+        return bookService.deleteBook(id)? "redirect:/index" : "redirect:/book/adderr";
+    }
+    @GetMapping("/book/editbook")
+    public String editbook( @RequestParam("id") int id,
+                          @RequestParam("name") String name,
+                          @RequestParam("author") String author,
+                          @RequestParam("publishing") String publishing,
+                          @RequestParam("price") String price) {
+        double pprice = Double.parseDouble(price);
+        Book book = new Book();
+        book.setId(id);
+        book.setName(name);
+        book.setAuthor(author);
+        book.setPublishing(publishing);
+        book.setPrice(pprice);
+        return bookService.updateBook(book) ? "redirect:/index" : "redirect:/book/adderr";
     }
 
 }

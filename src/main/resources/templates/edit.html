@@ -7,8 +7,9 @@
     <title>Title</title>
 </head>
 <body>
-<h1>添加失败，请重新添加</h1>
-<form method="post" action="/book/add">
+
+<form method="get" action="/book/edit">
+    <p>需要修改的书的id: <input type="text" name="id" /></p>
     <p>书名: <input type="text" name="name" /></p>
     <p>作者: <input type="text" name="author" /></p>
     <p>出版社: <input type="text" name="publishing" /></p>
