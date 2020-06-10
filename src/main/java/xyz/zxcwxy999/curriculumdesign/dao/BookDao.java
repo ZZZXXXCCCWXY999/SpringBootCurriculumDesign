@@ -11,21 +11,21 @@ public interface BookDao {
      * @return
      */
     @Insert("insert into book (name,author,publishing,price) values (#{book.name},#{book.author},#{book.publishing},#{book.price})")
-    public int addBook(Book book);
+    public int addBook(@Param("book")Book book);
 
     /**
      * 删除图书
      * @return
      */
-    @Delete("delete book where id=#{id}")
-    public int deleteBookById(int id);
+    @Delete("delete from book where id=#{id}")
+    public int deleteBookById(@Param("id")int id);
 
     /**
      * 修改图书
      * @return
      */
-    @Update("update book set (name,author,publishing,price) value (#{book.name},#{book.author},#{book.publishing},#{book.price})")
-    public int editBook(Book book);
+    @Update("update book set name=#{book.name},author=#{book.author},publishing=#{book.publishing},price=#{book.price} where id=#{book.id}")
+    public int editBook(@Param("book")Book book);
 
     /**
      * 获取所有图书

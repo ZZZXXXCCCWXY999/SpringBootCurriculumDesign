@@ -1,9 +1,13 @@
 package xyz.zxcwxy999.curriculumdesign.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import xyz.zxcwxy999.curriculumdesign.domain.Book;
 import xyz.zxcwxy999.curriculumdesign.service.BookService;
 
@@ -23,11 +27,11 @@ public class MainController {
 
     @GetMapping("/index")
     public String index(Model model) {
-        Book[] books=bookService.listBook();
-        if(books==null){
-            model.addAttribute("nobook","没有图书！！！");
-        }else{
-            model.addAttribute("book",books);
+        Book[] books = bookService.listBook();
+        if (books == null) {
+            model.addAttribute("nobook", "没有图书！！！");
+        } else {
+            model.addAttribute("book", books);
         }
         return "index";
     }
@@ -42,6 +46,30 @@ public class MainController {
         model.addAttribute("loginError", true);
         model.addAttribute("errMsg", "登录失败，用户名或密码错误！！！");
         return "loginerr";
+    }
+
+    @GetMapping("/book/add")
+    public String add() {
+        return "add";
+    }
+
+    @GetMapping("/book/adderr")
+    public String adderr() {
+        return "adderr";
+    }
+
+    @PostMapping("/book/add")
+    public String addbook(@RequestParam("name") String name,
+                          @RequestParam("author") String author,
+                          @RequestParam("publishing") String publishing,
+                          @RequestParam("price") String price) {
+        double pprice = Double.parseDouble(price);
+        Book book = new Book();
+        book.setName(name);
+        book.setAuthor(author);
+        book.setPublishing(publishing);
+        book.setPrice(pprice);
+        return bookService.createBook(book) ? "index" : "/book/adderr";
     }
 
 }

@@ -14,5 +14,5 @@ public class Book {
     String name;
     String author;
     String publishing;
-    String price;
+    double price;
 }

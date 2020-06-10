@@ -13,7 +13,7 @@
             <th>作者</th>
             <th>出版社</th>
             <th>价格</th>
-            <th>修改/删除</th>
+            <th><a th:href="@{/book/add}">添加</a></th>
         </tr>
         <tr class="success" th:each="book:${book}">
             <td th:text="${book.id}"></td>
@@ -23,11 +23,12 @@
             <td th:text="${book.price}"></td>
             <td>
                 <button id="edit" type="button" class="btn btn-primary">编辑</button>
-                <button id="delete" type="button" class="btn btn-danger" data-th-attr="id=${book.id}">删除</button>
+                <button id="delete" type="button" class="btn btn-danger" th:attr="id=${book.id}">删除</button>
             </td>
         </tr>
 
     </table>
+
 </div>
 <div class="container blog-content-container" sec:authorize="isAnonymous()">
     <h1>非法登录</h1>

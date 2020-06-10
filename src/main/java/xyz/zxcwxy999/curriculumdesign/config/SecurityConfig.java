@@ -49,11 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admins/**").hasRole("ADMIN")//需要相应角色才能访问
                 .and()
                 .formLogin()//基于Form表单登录认证
-                .loginPage("/login").failureUrl("/login-error")//自定义登录界面
-                .and().rememberMe().key(KEY)//启用remember me
-                .and().exceptionHandling().accessDeniedPage("/403");//处理异常，拒绝访问就重定向到403页面
-        http.csrf().ignoringAntMatchers("/h2-console/**");//禁用H2控制台的CSRF防护
-        http.headers().frameOptions().sameOrigin();//允许来自同一来源的H2控制台的请求
+                .loginPage("/login").failureUrl("/login-error");//自定义登录界面;
+
 }
 
     /**
